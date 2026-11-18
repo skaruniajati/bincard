@@ -2,9 +2,13 @@ import { SignJWT, jwtVerify } from "jose";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 
-const SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "digital-warehouse-palm-oil-secret-key-2026-secure-jwt-token"
-);
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET belum dikonfigurasi di environment variables");
+}
+
+const SECRET = new TextEncoder().encode(JWT_SECRET);
 
 export const AUTH_COOKIE_NAME = "warehouse_session";
 

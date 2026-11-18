@@ -4,9 +4,17 @@ import { getCurrentUser } from "@/lib/auth";
 import { TransactionSchema } from "@/lib/validations";
 import { generateTransactionNumber } from "@/lib/utils";
 import realtime from "@/lib/events";
-
 export async function GET(request: Request) {
   try {
+    const user = await getCurrentUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Sesi otentikasi telah berakhir. Silakan login kembali." },
+        { status: 401 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const search = searchParams.get("search")?.trim() || "";
     const type = searchParams.get("type") || "ALL"; // ALL, GR, GI

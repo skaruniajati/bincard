@@ -1,0 +1,30 @@
+﻿# Dependencies
+node_modules/
+
+# Next.js
+.next/
+.vercel/
+out/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Database lokal
+prisma/*.db
+prisma/*.db-journal
+*.sqlite
+*.sqlite3
+*.db
+
+# File data dan dokumen internal
+*.xlsx
+*.zip
+PROJECT.docx
+PROJECT_SPEC.txt
+PROJECT_TEXT.txt
+
+# File sementara
+*.log
+.DS_Store

@@ -91,21 +91,21 @@ export default function Sidebar({ userRole = "PETUGAS", isOpen, onClose }: Sideb
       {/* Sidebar Container */}
       <aside
         className={cn(
-          "fixed top-0 bottom-0 left-0 z-50 flex w-72 flex-col bg-gradient-to-b from-[#0B2545] via-[#103158] to-[#091D33] text-white shadow-2xl transition-transform duration-300 ease-in-out lg:static lg:translate-x-0",
+          "fixed top-0 bottom-0 left-0 z-50 flex w-72 max-w-[85vw] flex-col bg-gradient-to-b from-[#0B2545] via-[#103158] to-[#091D33] text-white shadow-2xl transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 lg:max-w-none",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         {/* Header / Logo with Animated Warehouse Icon */}
-        <div className="flex h-20 items-center justify-between border-b border-sky-900/60 px-6">
-          <div className="flex items-center gap-3">
-            <div className="group flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-tr from-sky-500 to-blue-400 text-white shadow-lg shadow-sky-950/40">
-              <Warehouse className="h-6 w-6 stroke-[2.2] animate-float-slow transition-transform duration-300 group-hover:scale-110" />
+        <div className="flex h-20 items-center justify-between border-b border-sky-900/60 px-4 sm:px-6">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1 mr-2">
+            <div className="group flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-gradient-to-tr from-sky-500 to-blue-400 text-white shadow-lg shadow-sky-950/40 shrink-0">
+              <Warehouse className="h-5 w-5 sm:h-6 sm:w-6 stroke-[2.2] animate-float-slow transition-transform duration-300 group-hover:scale-110" />
             </div>
-            <div>
-              <div className="text-[11px] font-bold tracking-wider text-sky-300 uppercase">
+            <div className="min-w-0 flex-1">
+              <div className="text-[10px] sm:text-[11px] font-bold tracking-wider text-sky-300 uppercase truncate">
                 PT Muaratoyu Subur Lestari
               </div>
-              <div className="text-base font-extrabold tracking-tight text-white">
+              <div className="text-sm sm:text-base font-extrabold tracking-tight text-white truncate">
                 Warehouse System
               </div>
             </div>
@@ -113,7 +113,8 @@ export default function Sidebar({ userRole = "PETUGAS", isOpen, onClose }: Sideb
 
           <button
             onClick={onClose}
-            className="rounded-lg p-1.5 text-sky-200 hover:bg-sky-800/60 hover:text-white lg:hidden"
+            className="rounded-lg p-1.5 text-sky-200 hover:bg-sky-800/60 hover:text-white lg:hidden shrink-0"
+            aria-label="Tutup Menu"
           >
             <X className="h-5 w-5" />
           </button>

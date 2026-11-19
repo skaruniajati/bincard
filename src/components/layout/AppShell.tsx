@@ -46,7 +46,7 @@ export default function AppShell({ children }: AppShellProps) {
       />
 
       {/* Main Content Area */}
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex flex-1 flex-col overflow-hidden min-w-0">
         <Topbar
           onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
           user={user}
@@ -55,7 +55,7 @@ export default function AppShell({ children }: AppShellProps) {
         {/* Tulisan Berjalan / Running Text Ticker */}
         <RunningTextTicker />
 
-        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+        <main className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 lg:p-8">
           <div className="mx-auto max-w-7xl">{children}</div>
         </main>
       </div>

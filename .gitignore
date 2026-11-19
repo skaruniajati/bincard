@@ -28,3 +28,7 @@ PROJECT_TEXT.txt
 # File sementara
 *.log
 .DS_Store
+.neon
+
+generated/
+*.tsbuildinfo

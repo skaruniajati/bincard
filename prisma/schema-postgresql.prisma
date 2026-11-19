@@ -1,0 +1,94 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("NEON_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/postgresql-client"
+}
+
+model User {
+  id           String        @id @default(cuid())
+  name         String
+  username     String        @unique
+  passwordHash String
+  role         String        @default("PETUGAS") // "ADMIN" | "PETUGAS"
+  isActive     Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  transactions Transaction[]
+  auditLogs    AuditLog[]
+}
+
+model Material {
+  id              String          @id @default(cuid())
+  materialCode    String          @unique
+  description     String
+  category        String // e.g. "Sparepart Armada", "Alat Panen", "Pupuk & Kimia", "Sparepart Pabrik (PKS)", "Safety (APD)"
+  uom             String // "PCS", "SET", "LTR", "KG", "SAK", "ROLL"
+  currentStock    Float           @default(0)
+  minimumStock    Float           @default(0)
+  maximumStock    Float?          @default(0)
+  storageLocation String // e.g. "RAK A-01 / B-02"
+  isActive        Boolean         @default(true)
+  remarks         String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  binCard         BinCard?
+  transactions    Transaction[]
+  stockMovements  StockMovement[]
+}
+
+model BinCard {
+  id         String   @id @default(cuid())
+  materialId String   @unique
+  material   Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+  qrToken    String   @unique
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Transaction {
+  id                String          @id @default(cuid())
+  transactionNumber String          @unique
+  materialId        String
+  material          Material        @relation(fields: [materialId], references: [id])
+  transactionType   String // "GR" | "GI"
+  quantity          Float
+  previousBalance   Float
+  newBalance        Float
+  transactionDate   DateTime        @default(now())
+  referenceNumber   String? // Surat Jalan, PO, SPB, WO
+  remarks           String?
+  userId            String
+  user              User            @relation(fields: [userId], references: [id])
+  createdAt         DateTime        @default(now())
+  stockMovements    StockMovement[]
+}
+
+model StockMovement {
+  id            String      @id @default(cuid())
+  materialId    String
+  material      Material    @relation(fields: [materialId], references: [id])
+  transactionId String
+  transaction   Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  movementType  String // "IN" | "OUT"
+  quantityIn    Float       @default(0)
+  quantityOut   Float       @default(0)
+  balance       Float
+  createdAt     DateTime    @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String // "CREATE", "UPDATE", "DEACTIVATE", "GR_TRANSACTION", "GI_TRANSACTION", "REVERSAL", "LOGIN"
+  entity    String // "Material", "Transaction", "User", "BinCard", "Auth"
+  entityId  String
+  oldValue  String?
+  newValue  String?
+  createdAt DateTime @default(now())
+}

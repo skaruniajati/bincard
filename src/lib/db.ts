@@ -1,4 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+
+import { PrismaClient } from "../../generated/postgresql-client";
 
 declare global {
   // eslint-disable-next-line no-var
